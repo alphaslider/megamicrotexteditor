@@ -24,7 +24,7 @@
 <div class="container"><div id="nums"></div><textarea id="editor" spellcheck="false" wrap="off"></textarea></div>
 <input type="file" id="i" style="display:none" onchange="open_f(event)">
 <script>
-  let files={"main.js":"// Vibe Logic\n"},cur="main.js",dirty=!1,
+  let files={"main.js":"// Ctrl + / - to zoom\n"},cur="main.js",dirty=!1,sz=14,
   E=document.getElementById('editor'),L=document.getElementById('p-list'),N=document.getElementById('cur'),G=document.getElementById('nums'),
   A=new(window.AudioContext||window.webkitAudioContext)();
   const T=(fs,d=.08)=>{
@@ -44,11 +44,16 @@
   save=()=>{files[cur]=E.value;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([E.value]));a.download=cur;a.click();dirty=!1;upd()},
   cls=n=>{if(((n===cur)?dirty:!1)&&!confirm("Unsaved?"))return;if(Object.keys(files).length>1){T([659,440]);delete files[n];if(cur===n){cur=Object.keys(files)[0];E.value=files[cur];dirty=!1}upd()}},
   f_new=()=>{let n=prompt("Name:");if(n){T([440,659]);files[n]="";sw(n)}},
-  open_f=e=>{let f=e.target.files[0],r=new FileReader();r.onload=v=>{T([440,659]);files[f.name]=v.target.result;sw(f.name)};r.readAsText(f)};
+  open_f=e=>{let f=e.target.files[0],r=new FileReader();r.onload=v=>{T([440,659]);files[f.name]=v.target.result;sw(f.name)};r.readAsText(f)},
+  zm=v=>{sz=Math.max(8,sz+v);document.body.style.fontSize=sz+'px';T(v>0?1200:600);ln()};
   E.oninput=()=>{dirty=!0;upd()};E.onscroll=()=>{G.scrollTop=E.scrollTop};
   E.onkeydown=e=>{
     if(e.key=='Tab'){e.preventDefault();document.execCommand('insertText',!1,'  ')}
-    if((e.ctrlKey||e.metaKey)&&e.key=='s'){e.preventDefault();T(880);save()}
+    if((e.ctrlKey||e.metaKey)){
+      if(e.key=='s'){e.preventDefault();T(880);save()}
+      if(e.key=='='||e.key=='+'){e.preventDefault();zm(2)}
+      if(e.key=='-'){e.preventDefault();zm(-2)}
+    }
   };
   E.value=files[cur];upd();
 </script></body></html>
