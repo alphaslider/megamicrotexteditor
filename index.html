@@ -1,19 +1,28 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
 <style>
   :root{--c:#0f4;--b:#000;--f:14px 'JetBrains Mono',monospace;--sz:14px}
   *{box-sizing:border-box}body{background:var(--b);color:var(--c);font:var(--f);margin:0;display:flex;flex-direction:column;height:100vh}
-  .bar{display:flex;gap:8px;padding:5px;background:#050505;border-bottom:1px solid #1a1a1c;align-items:center;z-index:20}
+  .bar{display:flex;gap:8px;padding:5px;background:#050505;border-bottom:1px solid #1a1a1c;align-items:center;z-index:20;flex-wrap:wrap}
   .menu{position:relative}.menu-content{display:none;position:absolute;background:#0a0a0a;border:1px solid #1a1a1c;min-width:140px}
-  .menu:hover .menu-content{display:block}.item{display:flex;justify-content:space-between;padding:6px;cursor:pointer;font-size:11px;border-bottom:1px solid #111}
-  .item:hover{background:var(--c);color:#000}.x{color:#f44;padding:0 5px}.container{display:flex;flex-grow:1;overflow:hidden}
+  .menu:hover .menu-content{display:block}.item{display:flex;justify-content:space-between;padding:10px;cursor:pointer;font-size:12px;border-bottom:1px solid #111}
+  .item:hover{background:var(--c);color:#000}.x{color:#f44;padding:0 8px}.container{display:flex;flex-grow:1;overflow:hidden}
   #nums{width:45px;padding:15px 5px;text-align:right;color:#444;border-right:1px solid #1a1a1c;user-select:none;background:#050505;overflow:hidden;font-size:var(--sz)}
   #editor{flex-grow:1;background:0;color:inherit;font-family:inherit;font-size:var(--sz);padding:15px;border:0;outline:0;resize:none;white-space:pre;overflow:auto}
   .wrap #editor{white-space:pre-wrap;word-break:break-all}
   .btn-grp{display:flex;border:1px solid #041}
-  button,label{background:#000;color:var(--c);border:1px solid #041;font-size:11px;padding:3px 8px;display:flex;align-items:center;cursor:pointer}
+  button,label{background:#000;color:var(--c);border:1px solid #041;font-size:11px;padding:4px 10px;display:flex;align-items:center;cursor:pointer;height:28px}
   .btn-grp button{border:0;border-left:1px solid #041}
   #cur{margin-left:auto;font-size:10px;opacity:.5}.dirty::after{content:' *';color:#f00}
+
+  /* Mobile Optimization */
+  @media(max-width:600px){
+    :root{--f:16px 'JetBrains Mono',monospace;--sz:16px}
+    button,label{padding:8px 12px;font-size:13px;height:38px}
+    .item{padding:15px;font-size:14px}
+    #nums{width:35px;padding-top:15px}
+  }
 </style></head><body>
 <div class="bar">
   <div class="menu"><button onclick="T(880)">FILE</button><div class="menu-content">
@@ -27,7 +36,7 @@
 <div class="container"><div id="nums"></div><textarea id="editor" spellcheck="false" wrap="off"></textarea></div>
 <input type="file" id="i" style="display:none" onchange="open_f(event)">
 <script>
-  let files={"main.js":"// Text Zoom Buttons Added\n"},cur="main.js",dirty=!1,sz=14,
+  let files={"main.js":"// Mobile-ready Notebook\n"},cur="main.js",dirty=!1,sz=14,
   E=document.getElementById('editor'),L=document.getElementById('p-list'),N=document.getElementById('cur'),G=document.getElementById('nums'),
   A=new(window.AudioContext||window.webkitAudioContext)();
   const T=(fs,d=.08)=>{
