@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -11,65 +13,46 @@
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
   body { background: var(--b); color: var(--c); font: var(--sz) 'JetBrains Mono', monospace; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
   
-  /* FIXED HEADER - ZERO GAP */
-  .bar { 
-    display: flex; gap: 8px; padding: 0 12px; height: 40px; background: var(--panel); 
-    border-bottom: 1px solid var(--border); z-index: 100; align-items: center; 
-    flex-shrink: 0; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  }
+  /* BIG TACTILE SCROLLBAR */
+  ::-webkit-scrollbar { width: 14px; height: 14px; background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #1a1a1c; border: 3px solid #0a0a0a; border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--c); }
+
+  /* MISSION CRITICAL HEADER */
+  .bar { display: flex; gap: 8px; padding: 0 12px; height: 40px; background: var(--panel); border-bottom: 1px solid var(--border); z-index: 100; align-items: center; flex-shrink: 0; }
   .menu { position: relative; height: 100%; display: flex; align-items: center; }
-  .menu-content { 
-    display: none; position: absolute; top: 100%; left: 0; 
-    background: #1a1a1c; border: 1px solid var(--border); min-width: 180px; 
-    box-shadow: 0 10px 40px #000; z-index: 101; border-radius: 0 0 4px 4px; overflow: hidden;
-  }
-  /* The Fix: Menu triggers on parent hover with 0px offset */
+  .menu-content { display: none; position: absolute; top: 100%; left: 0; background: #1a1a1c; border: 1px solid var(--border); min-width: 180px; z-index: 101; border-radius: 0 0 4px 4px; box-shadow: 0 10px 40px #000; overflow: hidden; }
   .menu:hover .menu-content { display: block; }
 
-  .item { 
-    display: flex; justify-content: space-between; padding: 12px 14px; 
-    cursor: pointer; font-size: 11px; color: #aaa; transition: 0.1s;
-    border-bottom: 1px solid rgba(255,255,255,0.03); 
-  }
+  .item { display: flex; justify-content: space-between; padding: 12px 14px; cursor: pointer; font-size: 11px; color: #aaa; border-bottom: 1px solid rgba(255,255,255,0.03); transition: 0.1s; }
   .item:hover { background: var(--c); color: #000; }
   .x { color: #ff5555; } .item:hover .x { color: #000; }
 
-  button, .btn-label { 
-    background: #1e1e20; color: #eee; border: 1px solid var(--border); 
-    font-size: 11px; font-weight: 500; padding: 5px 10px; cursor: pointer; 
-    display: flex; align-items: center; border-radius: 4px; transition: 0.2s;
-  }
+  button, .btn-label { background: #1e1e20; color: #eee; border: 1px solid var(--border); font-size: 11px; padding: 5px 10px; cursor: pointer; display: flex; align-items: center; border-radius: 4px; text-transform: uppercase; }
   button:hover { border-color: var(--c); color: var(--c); }
   
   #cur { margin-left: auto; font-size: 10px; color: #555; letter-spacing: 1px; }
   .dirty::after { content: ' •'; color: #ff5555; text-shadow: 0 0 5px #ff5555; }
 
-  /* VIM ALIGNMENT ENGINE */
+  /* ALIGNMENT ENGINE */
   .container { display: flex; flex-grow: 1; position: relative; overflow: hidden; background: var(--b); }
-  #nums { 
-    width: 60px; padding: 20px 0; text-align: right; color: #3b3b44; 
-    background: #0c0c0e; border-right: 1px solid var(--border); 
-    z-index: 20; user-select: none; pointer-events: none; overflow: hidden; 
-  }
-  .ln-row { padding-right: 12px; line-height: 1.6; font-size: var(--sz); }
+  #nums { width: 60px; padding: 20px 0; text-align: right; color: #3b3b44; background: #0c0c0e; border-right: 1px solid var(--border); z-index: 20; user-select: none; pointer-events: none; overflow: hidden; }
+  .ln-row { padding-right: 12px; line-height: 1.6; font-size: var(--sz); overflow: hidden; }
 
   .viewer { position: relative; flex-grow: 1; overflow: hidden; }
-  #pre, #editor {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    margin: 0; padding: 20px; border: 0; outline: 0;
-    font-family: 'JetBrains Mono', monospace; font-size: var(--sz); 
-    line-height: 1.6; tab-size: 4; white-space: pre; 
-    overflow: auto; resize: none;
-  }
+  #pre, #editor { position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 20px; border: 0; font: inherit; line-height: 1.6; tab-size: 4; white-space: pre; overflow: auto; resize: none; }
   
-  /* STERILE DUAL-LAYER */
-  #editor { background: transparent; color: transparent; caret-color: var(--c); z-index: 10; -webkit-text-fill-color: transparent; }
-  #pre { color: #f8f8f2; pointer-events: none; z-index: 5; }
+  /* STERILE DUAL LAYER */
+  #editor { background: transparent; color: transparent; caret-color: var(--c); z-index: 10; -webkit-text-fill-color: transparent; -webkit-overflow-scrolling: touch; }
+  #pre { color: #f8f8f2; pointer-events: none; z-index: 5; will-change: transform; }
   #editor::selection { background: rgba(0, 255, 68, 0.2); -webkit-text-fill-color: #fff; }
   
   .wrap #pre, .wrap #editor { white-space: pre-wrap; word-break: break-all; }
 
-  /* COLORS */
+  /* ATOMIC MIRROR */
+  #mirror { position: absolute; visibility: hidden; white-space: pre-wrap; word-break: break-all; padding: 20px; line-height: 1.6; z-index: -1; pointer-events: none; }
+
+  /* SYNTAX */
   .c-com { color: var(--com); font-style: italic; }
   .c-str { color: var(--str); }
   .c-key { color: var(--key); }
@@ -77,6 +60,8 @@
   .c-num { color: var(--num); }
   .c-logic { color: var(--logic); }
 </style></head><body>
+
+<div id="mirror"></div>
 
 <div class="bar">
   <div class="menu"><button>FILE</button><div class="menu-content">
@@ -86,10 +71,7 @@
     <div class="item" style="color:#ff5555" onclick="localStorage.clear();location.reload()">HARD RESET</div>
   </div></div>
   <div class="menu"><button>PROJ</button><div id="p-list" class="menu-content"></div></div>
-  <div style="display:flex; gap: 1px;">
-    <button onclick="zm(1)">+</button>
-    <button onclick="zm(-1)">-</button>
-  </div>
+  <div style="display:flex; gap: 1px;"><button onclick="zm(1)">+</button><button onclick="zm(-1)">-</button></div>
   <label class="btn-label" style="gap:5px"><input type="checkbox" id="w-check" onchange="B();document.body.classList.toggle('wrap');upd()" checked> WRAP</label>
   <span id="cur"></span>
 </div>
@@ -102,13 +84,13 @@
 
 <script>
   const getSelf = () => "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-  let saved = localStorage.getItem('hd_v13'), 
-      files = saved ? JSON.parse(saved) : {"LEET_CORE.html": getSelf()}, 
-      cur = "LEET_CORE.html", dirty = false, sz = 14;
+  let saved = localStorage.getItem('ALIGN_08_V1'), 
+      files = saved ? JSON.parse(saved) : {"ALIGN_08.html": getSelf()}, 
+      cur = Object.keys(files)[0], dirty = false, sz = 14;
   
   const E = document.getElementById('editor'), P = document.getElementById('pre'), 
         G = document.getElementById('nums'), L = document.getElementById('p-list'),
-        A = new (window.AudioContext||window.webkitAudioContext)();
+        M = document.getElementById('mirror'), A = new (window.AudioContext||window.webkitAudioContext)();
 
   const B = (f, d = .04) => {
     if(A.state === 'suspended') A.resume();
@@ -134,30 +116,39 @@
     return c;
   };
 
-  const sync = () => { P.scrollTop = E.scrollTop; P.scrollLeft = E.scrollLeft; G.scrollTop = E.scrollTop; };
+  const sync = () => {
+    requestAnimationFrame(() => {
+      P.scrollTop = G.scrollTop = E.scrollTop;
+      P.scrollLeft = E.scrollLeft;
+    });
+  };
   
   const upd = () => {
-    const lines = E.value.split('\n');
-    P.innerHTML = highlight(E.value) + (E.value.endsWith('\n') ? ' ' : '');
-    G.innerHTML = lines.map((_, i) => `<div class="ln-row" id="ln-${i}">${i + 1}</div>`).join('');
+    const text = E.value;
+    const lines = text.split('\n');
+    P.innerHTML = highlight(text) + (text.endsWith('\n') ? ' ' : '');
     
-    if (document.body.classList.contains('wrap')) {
-      const temp = document.createElement('div');
-      temp.style.cssText = `position:absolute;visibility:hidden;width:${E.clientWidth - 40}px;font:${sz}px 'JetBrains Mono',monospace;line-height:1.6;white-space:pre-wrap;word-break:break-all;padding:0;`;
-      document.body.appendChild(temp);
-      lines.forEach((content, i) => {
-        temp.innerText = content || ' ';
-        document.getElementById(`ln-${i}`).style.height = temp.getBoundingClientRect().height + 'px';
-      });
-      document.body.removeChild(temp);
-    } else {
-      lines.forEach((_, i) => document.getElementById(`ln-${i}`).style.height = '1.6em');
+    const isWrap = document.body.classList.contains('wrap');
+    if(isWrap) {
+      M.style.width = E.clientWidth + 'px';
+      M.style.fontSize = sz + 'px';
     }
+
+    let numsHTML = '';
+    for (let i = 0; i < lines.length; i++) {
+      let h = '1.6em';
+      if (isWrap) {
+        M.textContent = lines[i] || ' ';
+        h = M.offsetHeight + 'px';
+      }
+      numsHTML += `<div class="ln-row" style="height:${h}">${i + 1}</div>`;
+    }
+    G.innerHTML = numsHTML;
 
     document.getElementById('cur').innerText = cur;
     document.getElementById('cur').classList.toggle('dirty', dirty);
-    files[cur] = E.value; 
-    localStorage.setItem('hd_v13', JSON.stringify(files));
+    files[cur] = text; 
+    localStorage.setItem('ALIGN_08_V1', JSON.stringify(files));
     L.innerHTML = Object.keys(files).map(n => `<div class="item" onclick="sw('${n}')"><span>${n}${n===cur&&dirty?'*':''}</span><span class="x" onclick="event.stopPropagation();cls('${n}')">×</span></div>`).join('');
     sync();
   };
@@ -165,7 +156,7 @@
   const sw = n => { if(n !== cur){ B(2000); files[cur] = E.value; cur = n; E.value = files[n]; dirty = !1; upd(); } };
   const save = () => { B(2400); dirty = !1; upd(); const b = new Blob([E.value]), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = cur; a.click(); };
   const f_new = () => { let n = prompt("NAME:"); if(n){ B(1600); files[n] = ""; sw(n); } };
-  const open_f = e => { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = v => { B(1600); files[f.name] = v.target.result; sw(f.name); }; r.readAsText(f); };
+  const open_f = e => { const f = e.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = v => { B(1600); files[f.name] = v.target.result; sw(f.name); }; r.readAsText(f); e.target.value = ''; };
   const cls = n => { if(Object.keys(files).length > 1){ B(800); delete files[n]; if(cur === n) sw(Object.keys(files)[0]); upd(); } };
   const zm = v => { sz = Math.max(10, sz + v); document.documentElement.style.setProperty('--sz', sz + 'px'); upd(); };
 
